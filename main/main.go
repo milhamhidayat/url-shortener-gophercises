@@ -11,8 +11,9 @@ import (
 
 func main() {
 
-	var yamlFile string
+	var yamlFile, jsonFile string
 	flag.StringVar(&yamlFile, "yaml", "urls.yaml", "YAML file for router")
+	flag.StringVar(&jsonFile, "json", "urls.json", "JSON file for router")
 	flag.Parse()
 
 	mux := defaultMux()
@@ -40,7 +41,15 @@ func main() {
 		if err != nil {
 			panic(err)
 		}
+	} else if jsonFile != "" {
+		urlData, err = ioutil.ReadFile(jsonFile)
+
+		if err != nil {
+			panic(err)
+		}
+
 	}
+
 	fmt.Println("Starting the server on :8080")
 	http.ListenAndServe(":8080", urlHandler)
 
