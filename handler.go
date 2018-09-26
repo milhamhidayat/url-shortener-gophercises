@@ -3,6 +3,8 @@ package urlshort
 import (
 	"net/http"
 
+	"encoding/json"
+
 	yaml "gopkg.in/yaml.v2"
 )
 
@@ -52,6 +54,18 @@ func YAMLHandler(yamlBytes []byte, fallback http.Handler) (http.HandlerFunc, err
 	return MapHandler(pathsToUrls, fallback), nil
 }
 
+func JSONHandler(jsonBytes []byte, fallback http.Handler) (http.HandlerFunc, error) {
+	pathUrls, err := parseJSON(jsonBytes)
+
+	if err != nil {
+		return nil, err
+	}
+
+	pathsToUrls := buildMap(pathUrls)
+
+	return MapHandler(pathsToUrls, fallback), nil
+}
+
 func buildMap(pathUrls []PathUrl) map[string]string {
 	pathsToUrls := make(map[string]string)
 	for _, pu := range pathUrls {
@@ -67,6 +81,16 @@ func parseYAML(data []byte) ([]PathUrl, error) {
 		return nil, err
 	}
 	return pathUrls, nil
+}
+
+func parseJSON(data []byte) ([]PathUrl, error) {
+	var pathUrls []PathUrl
+	err := json.Unmarshal(data, &pathUrls)
+	if err != nil {
+		return nil, err
+	}
+
+	return pathUrls, err
 }
 
 type PathUrl struct {

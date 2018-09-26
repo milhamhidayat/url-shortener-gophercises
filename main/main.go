@@ -48,6 +48,12 @@ func main() {
 			panic(err)
 		}
 
+		urlHandler, err = urlshort.JSONHandler([]byte(urlData), mapHandler)
+
+		if err != nil {
+			panic(err)
+		}
+
 	}
 
 	fmt.Println("Starting the server on :8080")
