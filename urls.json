@@ -4,7 +4,7 @@
         "url": "https://godoc.org/github.com/gophercises/urlshort"
     },
     {
-        "path": "yaml-godoc",
+        "path": "/yaml-godoc",
         "url": "https://godoc.org/gopkg.in/yaml.v2"
     }
 ]
